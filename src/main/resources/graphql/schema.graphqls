@@ -1,0 +1,20 @@
+type User {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    email: String!
+    phoneNumber: String!
+    address: String!
+    city: String!
+    state: String!
+    zipCode: String!
+    role: Role!
+    password: String!
+}
+
+enum Role {
+    ADMIN
+    CUSTOMER
+    SELLER
+}
+
