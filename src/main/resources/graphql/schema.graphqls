@@ -18,3 +18,15 @@ enum Role {
     SELLER
 }
 
+input UserInput {
+    firstName: String!
+    lastName: String!
+    email: String!
+    phoneNumber: String!
+    address: String!
+    city: String!
+    state: String!
+    zipCode: String!
+    password: String!
+    role: Role!
+}
