@@ -2,12 +2,15 @@ package org.romanzhula.spring_react_graphql_grocery_store.dto;
 
 import org.romanzhula.spring_react_graphql_grocery_store.models.User;
 import org.romanzhula.spring_react_graphql_grocery_store.models.enums.Role;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class UserInput {
+
+    private final PasswordEncoder passwordEncoder;
 
     private String firstName;
     private String lastName;
@@ -19,6 +22,10 @@ public class UserInput {
     private String zipCode;
     private String password;
     private Role role;
+
+    public UserInput(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -111,7 +118,7 @@ public class UserInput {
         user.setCity(this.city);
         user.setState(this.state);
         user.setZipCode(this.zipCode);
-        user.setPassword(this.password);
+        user.setPassword(passwordEncoder.encode(this.password));
 
         Set<String> roles = Arrays.stream(Role.values())
                 .map(Role::name)
