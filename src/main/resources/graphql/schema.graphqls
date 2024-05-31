@@ -38,6 +38,20 @@ type Query {
     getUsersByRole(role: Role): [User]!
 }
 
+type AuthResponse {
+    jwt: String
+    jwtCookie: String
+    message: String
+}
+
+input LoginRequest {
+    email: String!
+    password: String!
+}
+
 type Mutation {
     addUser(input: UserInput): User
+    registerUser(input: UserInput): User
+    loginUser(loginRequest: LoginRequest): AuthResponse
+    logoutUser: String
 }
