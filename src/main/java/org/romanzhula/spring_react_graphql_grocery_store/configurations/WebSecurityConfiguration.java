@@ -2,6 +2,7 @@ package org.romanzhula.spring_react_graphql_grocery_store.configurations;
 
 import org.romanzhula.spring_react_graphql_grocery_store.configurations.security.implementations.UserDetailServiceImpl;
 import org.romanzhula.spring_react_graphql_grocery_store.configurations.security.jwt.components.AuthEntryPointJwt;
+import org.romanzhula.spring_react_graphql_grocery_store.configurations.security.jwt.filters.AuthJwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -75,7 +76,7 @@ public class WebSecurityConfiguration {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authenticationProvider(daoAuthenticationProvider())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(authJwtFilter(), UsernamePasswordAuthenticationFilter.class)
         ;
 
         return httpSecurity.build();
