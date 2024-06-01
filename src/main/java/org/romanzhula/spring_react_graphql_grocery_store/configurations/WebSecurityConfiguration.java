@@ -1,6 +1,7 @@
 package org.romanzhula.spring_react_graphql_grocery_store.configurations;
 
 import org.romanzhula.spring_react_graphql_grocery_store.configurations.security.implementations.UserDetailServiceImpl;
+import org.romanzhula.spring_react_graphql_grocery_store.configurations.security.jwt.components.AuthEntryPointJwt;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
