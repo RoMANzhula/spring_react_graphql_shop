@@ -10,8 +10,6 @@ import java.util.stream.Collectors;
 
 public class UserInput {
 
-    private final PasswordEncoder passwordEncoder;
-
     private String firstName;
     private String lastName;
     private String email;
@@ -23,9 +21,6 @@ public class UserInput {
     private String password;
     private Role role;
 
-    public UserInput(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -107,7 +102,7 @@ public class UserInput {
         this.role = role;
     }
 
-    public User getUserEntity() {
+    public User getUserEntity(PasswordEncoder passwordEncoder) {
         User user = new User();
 
         user.setFirstName(this.firstName);
@@ -118,7 +113,7 @@ public class UserInput {
         user.setCity(this.city);
         user.setState(this.state);
         user.setZipCode(this.zipCode);
-        user.setPassword(passwordEncoder.encode(this.password));
+        user.setPassword(this.password);
 
         Set<String> roles = Arrays.stream(Role.values())
                 .map(Role::name)
