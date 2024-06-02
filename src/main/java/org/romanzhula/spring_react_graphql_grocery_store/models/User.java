@@ -7,22 +7,6 @@ import org.romanzhula.spring_react_graphql_grocery_store.models.enums.Role;
 @Table(name = "USERS")
 public class User {
 
-    /**
-     * type User {
-     *     id: ID!
-     *     firstName: String!
-     *     lastName: String!
-     *     email: String!
-     *     phoneNumber: String!
-     *     address: String!
-     *     city: String!
-     *     state: String!
-     *     zipCode: String!
-     *     roles: [Role]!
-     *     password: String!
-     * }
-     * */
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID")

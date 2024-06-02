@@ -60,6 +60,6 @@ public class AuthJwtFilter extends OncePerRequestFilter {
     }
 
     private String parseJwt(HttpServletRequest request) {
-        return JwtUtils.getJwtFromCookies(request);
+        return jwtUtils.getJwtFromCookies(request);
     }
 }

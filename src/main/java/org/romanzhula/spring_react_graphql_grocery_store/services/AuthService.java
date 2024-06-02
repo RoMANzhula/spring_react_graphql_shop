@@ -1,5 +1,7 @@
 package org.romanzhula.spring_react_graphql_grocery_store.services;
 
+import org.romanzhula.spring_react_graphql_grocery_store.configurations.security.implementations.UserDetailsImpl;
+import org.romanzhula.spring_react_graphql_grocery_store.configurations.security.jwt.components.JwtUtils;
 import org.romanzhula.spring_react_graphql_grocery_store.controllers.requests.LoginRequest;
 import org.romanzhula.spring_react_graphql_grocery_store.controllers.responses.AuthResponse;
 import org.romanzhula.spring_react_graphql_grocery_store.dto.UserInput;
@@ -11,7 +13,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,18 +20,15 @@ public class AuthService {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
-    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
     public AuthService(
             AuthenticationManager authenticationManager,
             JwtUtils jwtUtils,
-            PasswordEncoder passwordEncoder,
             UserRepository userRepository
     ) {
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
-        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
 
@@ -47,7 +45,7 @@ public class AuthService {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        String jwt = jwtUtils.generateTokenFromUsername(userDetails);
+        String jwt = jwtUtils.generateTokenFromUserEmail(userDetails);
         ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
 
         return new AuthResponse(
