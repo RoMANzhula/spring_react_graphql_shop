@@ -7,7 +7,6 @@ import org.romanzhula.spring_react_graphql_grocery_store.repositories.UserReposi
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,11 +22,13 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @QueryMapping
     public Iterable<User> getAllUsers() {
         return this.userRepository.findAll();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @QueryMapping
     public User getUserById(
             @Argument Long id
@@ -35,6 +36,7 @@ public class UserController {
         return this.userRepository.findUserById(id).orElseThrow();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @QueryMapping
     public User getUserByEmail(
             @Argument String email
@@ -42,6 +44,7 @@ public class UserController {
         return this.userRepository.findUserByEmail(email).orElseThrow();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @QueryMapping
     public Iterable<User> getUsersByRole(
             @Argument Role role
@@ -49,8 +52,7 @@ public class UserController {
         return this.userRepository.findUsersByRole(role);
     }
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @Secured("ROLE_ADMIN")
+    @PreAuthorize("hasRole('ADMIN')")
     @MutationMapping
     public User addUser(
             @Argument(name = "input") UserInput userInput

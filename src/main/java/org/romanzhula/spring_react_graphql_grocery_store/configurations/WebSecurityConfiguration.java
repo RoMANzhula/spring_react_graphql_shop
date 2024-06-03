@@ -73,6 +73,7 @@ public class WebSecurityConfiguration {
                 )
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(toH2Console()).permitAll()
+                        .requestMatchers("/graphql").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement

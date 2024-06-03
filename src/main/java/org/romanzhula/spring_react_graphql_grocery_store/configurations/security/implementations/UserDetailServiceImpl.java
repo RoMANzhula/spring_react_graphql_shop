@@ -21,7 +21,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
                 .findUserByEmail(email)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found: " + email)
-                );
+                )
+        ;
 
         return UserDetailsImpl.build(user);
     }

@@ -1,19 +1,17 @@
 package org.romanzhula.spring_react_graphql_grocery_store.controllers.responses;
 
-import org.springframework.http.ResponseCookie;
-
 public class AuthResponse {
 
     private String jwt;
 
-    private ResponseCookie cookie;
+    private String jwtCookie;
 
     private String message;
 
 
-    public AuthResponse(String jwt, ResponseCookie cookie, String message) {
+    public AuthResponse(String jwt, String jwtCookie, String message) {
         this.jwt = jwt;
-        this.cookie = cookie;
+        this.jwtCookie = jwtCookie;
         this.message = message;
     }
 
@@ -25,12 +23,12 @@ public class AuthResponse {
         this.jwt = jwt;
     }
 
-    public ResponseCookie getCookie() {
-        return cookie;
+    public String getJwtCookie() {
+        return jwtCookie;
     }
 
-    public void setCookie(ResponseCookie cookie) {
-        this.cookie = cookie;
+    public void setJwtCookie(String jwtCookie) {
+        this.jwtCookie = jwtCookie;
     }
 
     public String getMessage() {

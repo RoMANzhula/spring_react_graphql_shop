@@ -1,5 +1,7 @@
 package org.romanzhula.spring_react_graphql_grocery_store.services;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.romanzhula.spring_react_graphql_grocery_store.configurations.security.implementations.UserDetailsImpl;
 import org.romanzhula.spring_react_graphql_grocery_store.configurations.security.jwt.components.JwtUtils;
 import org.romanzhula.spring_react_graphql_grocery_store.controllers.requests.LoginRequest;
@@ -14,7 +16,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Service
 public class AuthService {
@@ -72,7 +77,27 @@ public class AuthService {
 
 
     public String logoutUser() {
-        SecurityContextHolder.clearContext();
-        return "Successfully logged out!";
+//        SecurityContextHolder.clearContext();
+//        jwtUtils.getCleanJwtCookie();
+//
+//        return "Successfully logged out!";
+
+        try {
+            ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            HttpServletRequest request = attributes.getRequest();
+            HttpServletResponse response = attributes.getResponse();
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+            if (auth != null) {
+                new SecurityContextLogoutHandler().logout(request, response, auth);
+                jwtUtils.getCleanJwtCookie();
+                return "Logout successful";
+            } else {
+                return "Not authenticated";
+            }
+
+        } catch (Exception e) {
+            return "Internal Server Error";
+        }
     }
 }
