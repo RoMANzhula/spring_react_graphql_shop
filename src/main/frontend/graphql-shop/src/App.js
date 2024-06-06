@@ -1,8 +1,8 @@
-import logo from './logo.svg';
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import Homepage from './pages/home';
 import Navbar from './components/navbar';
+import Register from './pages/register';
 
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path='/' element={<Homepage/>} />
-        <Route path='/register' element={<Homepage/>} />
+        <Route path='/register' element={<Register/>} />
         <Route path='/login' element={<Homepage/>} />
       </Routes>
     </div>
