@@ -1,5 +1,7 @@
 package org.romanzhula.spring_react_graphql_grocery_store.configurations;
 
+import org.romanzhula.spring_react_graphql_grocery_store.configurations.security.cors.CorsAutoConfiguration;
+import org.romanzhula.spring_react_graphql_grocery_store.configurations.security.cors.EnableCORS;
 import org.romanzhula.spring_react_graphql_grocery_store.configurations.security.implementations.UserDetailServiceImpl;
 import org.romanzhula.spring_react_graphql_grocery_store.configurations.security.jwt.components.AuthEntryPointJwt;
 import org.romanzhula.spring_react_graphql_grocery_store.configurations.security.jwt.filters.AuthJwtFilter;
@@ -24,17 +26,21 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@EnableCORS
 public class WebSecurityConfiguration {
 
     private final UserDetailServiceImpl userDetailServiceImpl;
     private final AuthEntryPointJwt authEntryPointJwtUnauthorizedHandler;
+    private final CorsAutoConfiguration corsAutoConfiguration;
 
     public WebSecurityConfiguration(
             UserDetailServiceImpl userDetailServiceImpl,
-            AuthEntryPointJwt authEntryPointJwtUnauthorizedHandler
+            AuthEntryPointJwt authEntryPointJwtUnauthorizedHandler,
+            CorsAutoConfiguration corsAutoConfiguration
     ) {
         this.userDetailServiceImpl = userDetailServiceImpl;
         this.authEntryPointJwtUnauthorizedHandler = authEntryPointJwtUnauthorizedHandler;
+        this.corsAutoConfiguration = corsAutoConfiguration;
     }
 
     @Bean
@@ -82,6 +88,7 @@ public class WebSecurityConfiguration {
                 .httpBasic(withDefaults())
                 .authenticationProvider(daoAuthenticationProvider())
                 .addFilterBefore(authJwtFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(corsAutoConfiguration.corsFilter(), AuthJwtFilter.class)
                 .headers((headers) ->
                         headers
                                 .frameOptions((frameOptions) -> frameOptions.disable())
