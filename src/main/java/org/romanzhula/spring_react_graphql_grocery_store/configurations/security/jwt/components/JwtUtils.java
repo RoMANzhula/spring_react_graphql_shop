@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.romanzhula.spring_react_graphql_grocery_store.configurations.security.implementations.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 
@@ -19,6 +20,7 @@ import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtUtils {
@@ -58,6 +60,9 @@ public class JwtUtils {
         return Jwts
                 .builder()
                 .subject(userDetailsImpl.getUsername())
+                .claim("role", userDetailsImpl.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList()))
                 .issuedAt(Date.from(issuedAt))
                 .expiration(Date.from(expiration))
                 .signWith(key())
