@@ -2,6 +2,7 @@ import { AppBar, Box, Toolbar, Typography, Button } from "@mui/material";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
+import { jwtDecode } from "jwt-decode";
 
 
 function Navbar() {
@@ -15,6 +16,14 @@ function Navbar() {
 
   console.log(user);
 
+  let userRole = null;
+  
+  if (user && localStorage.getItem("jwt")) {
+    const token = localStorage.getItem("jwt");
+    const decodedToken = jwtDecode(token);
+    userRole = decodedToken.role.toString();
+  }
+
   return (
     <Box sx={{flexGrow: 1}}>
       <AppBar position="static">
@@ -25,6 +34,11 @@ function Navbar() {
           <Box alignItems="right" sx={{flexGrow: 1, textAlign: "right"}}>
             { user ?
               <>
+                { userRole === 'ROLE_ADMIN' && (
+                  <Link to="/admin/allUsers" style={{textDecoration: "none", color: "white", margin: "17px"}}>
+                    All Users
+                  </Link>
+                )}
                 <Button style={{textDecoration: "none", color: "white", margin: "17px"}} onClick={onLogout}>Logout</Button>
               </>
             :
