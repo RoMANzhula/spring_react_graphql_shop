@@ -34,7 +34,7 @@ public class CorsAutoConfiguration {
         globalConfiguration.setAllowedOrigins(getAllowedOrigins());
         globalConfiguration.setAllowedMethods(getAllowedMethods());
         globalConfiguration.setAllowedHeaders(getAllowedHeaders());
-        globalConfiguration.setAllowCredentials(properties.getAllowCredentials());
+        globalConfiguration.setAllowCredentials(true);
 
         source.registerCorsConfiguration("/**", globalConfiguration);
 
