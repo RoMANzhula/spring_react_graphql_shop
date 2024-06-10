@@ -1,11 +1,11 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-import Homepage from './pages/home';
-import Navbar from './components/navbar';
-import Register from './pages/register';
-import Login from './pages/login';
+import Homepage from './pages/Home';
+import Navbar from './components/Navbar';
+import Register from './pages/Register';
+import Login from './pages/Login';
 import AdminRoute from './components/AdminRoute';
-import UserList from './pages/allUsers';
+import UserList from './pages/allUsers/AllUsers';
 
 
 function App() {
