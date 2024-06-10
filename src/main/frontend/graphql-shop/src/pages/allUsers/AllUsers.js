@@ -1,27 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import './AllUsers.css';
 
+
 const GET_ALL_USERS = gql`
-  query getAllUsers {
-    getAllUsers {
-      id
-      firstName
-      lastName
-      email
-      phoneNumber
-      address
-      city
-      state
-      zipCode
-      role
+  query getAllUsers($limit: Int!, $offset: Int!) {
+    getAllUsers(limit: $limit, offset: $offset) {
+      users {
+        id
+        firstName
+        lastName
+        email
+        phoneNumber
+        address
+        city
+        state
+        zipCode
+        role
+      }
+      totalUsers
     }
   }
 `;
 
 function UsersList() {
-  const { loading, error, data } = useQuery(GET_ALL_USERS);
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 10;
+
+  const { loading, error, data } = useQuery(GET_ALL_USERS, {
+    variables: { limit: usersPerPage, offset: (currentPage - 1) * usersPerPage }
+  });
 
   if (loading) {
     return <p>Loading...</p>;
@@ -30,6 +39,8 @@ function UsersList() {
   if (error) {
     return <p>Error: {error.message}</p>;
   }
+
+  const totalPages = Math.ceil(data.getAllUsers.totalUsers / usersPerPage);
 
   return (
     <div>
@@ -50,7 +61,7 @@ function UsersList() {
           </tr>
         </thead>
         <tbody>
-          {data.getAllUsers.map(user => (
+          {data.getAllUsers.users.map(user => (
             <tr key={user.id}>
               <td>{user.id}</td>
               <td>{user.firstName}</td>
@@ -66,6 +77,21 @@ function UsersList() {
           ))}
         </tbody>
       </table>
+      <div className="pagination">
+        <button
+          onClick={() => setCurrentPage(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <span>Page {currentPage} of {totalPages}</span>
+        <button
+          onClick={() => setCurrentPage(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }

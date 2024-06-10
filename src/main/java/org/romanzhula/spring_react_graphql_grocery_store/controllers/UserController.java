@@ -1,15 +1,21 @@
 package org.romanzhula.spring_react_graphql_grocery_store.controllers;
 
+import org.romanzhula.spring_react_graphql_grocery_store.controllers.responses.UserPage;
 import org.romanzhula.spring_react_graphql_grocery_store.dto.UserInput;
 import org.romanzhula.spring_react_graphql_grocery_store.models.User;
 import org.romanzhula.spring_react_graphql_grocery_store.models.enums.Role;
 import org.romanzhula.spring_react_graphql_grocery_store.repositories.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
 
 @RestController
 public class UserController {
@@ -24,8 +30,14 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @QueryMapping
-    public Iterable<User> getAllUsers() {
-        return this.userRepository.findAll();
+    public UserPage getAllUsers(@Argument int limit, @Argument int offset) {
+        Pageable pageable = PageRequest.of(offset / limit, limit);
+        Page<User> userPage = userRepository.findAll(pageable);
+
+        UserPage result = new UserPage();
+        result.setUsers(userPage.hasContent() ? userPage.getContent() : new ArrayList<>());
+        result.setTotalUsers((int) userPage.getTotalElements());
+        return result;
     }
 
     @PreAuthorize("hasRole('ADMIN')")

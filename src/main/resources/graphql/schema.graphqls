@@ -12,6 +12,11 @@ type User {
     password: String!
 }
 
+type UserPage {
+    users: [User!]!
+    totalUsers: Int!
+}
+
 enum Role {
     ROLE_ADMIN
     ROLE_CUSTOMER
@@ -32,7 +37,7 @@ input UserInput {
 }
 
 type Query {
-    getAllUsers: [User]!
+    getAllUsers(limit: Int!, offset: Int!): UserPage!
     getUserById(id: ID): User
     getUserByEmail(email: String): User
     getUsersByRole(role: Role): [User]!
