@@ -33,3 +33,11 @@
 .users-table tbody tr:hover {
   background-color: #f1f1f1;
 }
+
+.container {
+  text-align: center;
+}
+
+.center {
+  margin-top: 20px;
+}

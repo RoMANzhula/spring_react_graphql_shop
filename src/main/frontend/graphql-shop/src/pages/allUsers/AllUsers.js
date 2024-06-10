@@ -26,7 +26,8 @@ const GET_ALL_USERS = gql`
 
 function UsersList() {
   const [currentPage, setCurrentPage] = useState(1);
-  const usersPerPage = 10;
+  const [usersPerPage, setUsersPerPage] = useState(10);
+  const [customPerPage, setCustomPerPage] = useState(10);
 
   const { loading, error, data } = useQuery(GET_ALL_USERS, {
     variables: { limit: usersPerPage, offset: (currentPage - 1) * usersPerPage }
@@ -44,7 +45,20 @@ function UsersList() {
 
   return (
     <div>
-      <h3>Users</h3>
+      <div className="container">
+        <h3 className="center">Users</h3>
+
+        <label style={{ marginRight: '2px' }}>Users Per Page: </label>
+        <select value={usersPerPage} onChange={(e) => setUsersPerPage(parseInt(e.target.value))}>
+          <option value={3}>3</option>
+          <option value={5}>5</option>
+          <option value={7}>7</option>
+        </select>
+      
+        <label style={{ marginRight: '2px', marginLeft: '30px' }}>Custom Users Per Page: </label>
+        <input type="text" value={customPerPage} onChange={(e) => setCustomPerPage(parseInt(e.target.value))} size="1" />
+        <button onClick={() => setUsersPerPage(customPerPage)}>Set</button>
+      </div>
       <table className="users-table">
         <thead>
           <tr>
@@ -78,19 +92,23 @@ function UsersList() {
         </tbody>
       </table>
       <div className="pagination">
-        <button
-          onClick={() => setCurrentPage(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          Previous
-        </button>
-        <span>Page {currentPage} of {totalPages}</span>
-        <button
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </button>
+        <div className='container'>
+          <button
+            style={{ marginRight: '2px' }}
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Prev
+          </button>
+          <span>Page {currentPage} of {totalPages}</span>
+          <button
+            style={{ marginLeft: '2px' }}
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );
