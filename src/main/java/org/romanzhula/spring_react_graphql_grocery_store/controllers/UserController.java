@@ -5,6 +5,7 @@ import org.romanzhula.spring_react_graphql_grocery_store.dto.UserInput;
 import org.romanzhula.spring_react_graphql_grocery_store.models.User;
 import org.romanzhula.spring_react_graphql_grocery_store.models.enums.Role;
 import org.romanzhula.spring_react_graphql_grocery_store.repositories.UserRepository;
+import org.romanzhula.spring_react_graphql_grocery_store.services.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,22 +23,22 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserController(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            UserService userService
+    ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @QueryMapping
     public UserPage getAllUsers(@Argument int limit, @Argument int offset) {
-        Pageable pageable = PageRequest.of(offset / limit, limit);
-        Page<User> userPage = userRepository.findAll(pageable);
-
-        UserPage result = new UserPage();
-        result.setUsers(userPage.hasContent() ? userPage.getContent() : new ArrayList<>());
-        result.setTotalUsers((int) userPage.getTotalElements());
-        return result;
+        return userService.getAllUsers(limit, offset);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
