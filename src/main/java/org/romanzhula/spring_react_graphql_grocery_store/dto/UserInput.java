@@ -113,7 +113,9 @@ public class UserInput {
         user.setCity(this.city);
         user.setState(this.state);
         user.setZipCode(this.zipCode);
-        user.setPassword(this.password);
+
+        String encodedPassword = passwordEncoder.encode(this.password);
+        user.setPassword(encodedPassword);
 
         Set<String> roles = Arrays.stream(Role.values())
                 .map(Role::name)
