@@ -14,10 +14,8 @@ function Navbar() {
     navigate('/');
   }
 
-  console.log(user);
-
   let userRole = null;
-  
+
   if (user && localStorage.getItem("jwt")) {
     const token = localStorage.getItem("jwt");
     const decodedToken = jwtDecode(token);
@@ -25,26 +23,31 @@ function Navbar() {
   }
 
   return (
-    <Box sx={{flexGrow: 1}}>
+    <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h5" component="div">
-            <Link to="/" style={{textDecoration: "none", color: "black"}}>Greeting</Link>
+            <Link to="/" style={{ textDecoration: "none", color: "black" }}>Greeting</Link>
           </Typography>
-          <Box alignItems="right" sx={{flexGrow: 1, textAlign: "right"}}>
-            { user ?
+          <Box alignItems="right" sx={{ flexGrow: 1, textAlign: "right" }}>
+            {user ?
               <>
-                { userRole === 'ROLE_ADMIN' && (
-                  <Link to="/admin/allUsers" style={{textDecoration: "none", color: "white", margin: "17px"}}>
-                    All Users
-                  </Link>
+                {userRole === 'ROLE_ADMIN' && (
+                  <>
+                    <Link to="/admin/allUsers" style={{ textDecoration: "none", color: "white", margin: "17px" }}>
+                      All Users
+                    </Link>
+                    <Link to="/admin/addUser" style={{ textDecoration: "none", color: "white", margin: "17px" }}>
+                      Add User
+                    </Link>
+                  </>
                 )}
-                <Button style={{textDecoration: "none", color: "white", margin: "17px"}} onClick={onLogout}>Logout</Button>
+                <Button style={{ textDecoration: "none", color: "white", margin: "17px" }} onClick={onLogout}>Logout</Button>
               </>
-            :
+              :
               <>
-                <Link to="/login" style={{textDecoration: "none", color: "white", margin: "17px"}}>Login</Link>
-                <Link to="/register" style={{textDecoration: "none", color: "black"}}>Register</Link>
+                <Link to="/login" style={{ textDecoration: "none", color: "white", margin: "17px" }}>Login</Link>
+                <Link to="/register" style={{ textDecoration: "none", color: "black" }}>Register</Link>
               </>
             }
           </Box>

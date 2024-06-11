@@ -5,7 +5,8 @@ import Navbar from './components/Navbar';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import AdminRoute from './components/AdminRoute';
-import UserList from './pages/allUsers/AllUsers';
+import AddUser from './pages/addUser/AddUser';
+import UsersList from './pages/allUsers/AllUsers';
 
 
 function App() {
@@ -16,14 +17,8 @@ function App() {
         <Route path='/' element={<Homepage/>} />
         <Route path='/register' element={<Register/>} />
         <Route path='/login' element={<Login/>} />
-        <Route
-          path="/admin/allUsers"
-          element={
-            <AdminRoute>
-              <UserList />
-            </AdminRoute>
-          }
-        />
+        <Route path="/admin/allUsers" element={<AdminRoute><UsersList /></AdminRoute>} />
+        <Route path="/admin/addUser" element={<AdminRoute><AddUser /></AdminRoute>} />
       </Routes>
     </div>
   );
