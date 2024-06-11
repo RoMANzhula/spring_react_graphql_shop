@@ -38,9 +38,9 @@ input UserInput {
 
 type Query {
     getAllUsers(limit: Int!, offset: Int!): UserPage!
-    getUserById(id: ID): User
-    getUserByEmail(email: String): User
-    getUsersByRole(role: Role): [User]!
+    getUserById(id: ID!): User
+    getUserByEmail(email: String!): User
+    getUsersByRole(role: Role!, limit: Int!, offset: Int!): UserPage!
 }
 
 type AuthResponse {
@@ -55,8 +55,8 @@ input LoginRequest {
 }
 
 type Mutation {
-    addUser(input: UserInput): User
-    registerUser(input: UserInput): User
-    loginUser(loginRequest: LoginRequest): AuthResponse
+    addUser(input: UserInput!): User
+    registerUser(input: UserInput!): User
+    loginUser(loginRequest: LoginRequest!): AuthResponse
     logoutUser: String
 }

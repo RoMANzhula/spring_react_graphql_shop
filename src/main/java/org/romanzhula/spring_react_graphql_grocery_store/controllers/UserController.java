@@ -6,17 +6,12 @@ import org.romanzhula.spring_react_graphql_grocery_store.models.User;
 import org.romanzhula.spring_react_graphql_grocery_store.models.enums.Role;
 import org.romanzhula.spring_react_graphql_grocery_store.repositories.UserRepository;
 import org.romanzhula.spring_react_graphql_grocery_store.services.UserService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
 
 @RestController
 public class UserController {
@@ -46,7 +41,7 @@ public class UserController {
     public User getUserById(
             @Argument Long id
     ) {
-        return this.userRepository.findUserById(id).orElseThrow();
+        return userService.getUserById(id);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -59,10 +54,12 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @QueryMapping
-    public Iterable<User> getUsersByRole(
-            @Argument Role role
+    public UserPage getUsersByRole(
+            @Argument Role role,
+            @Argument int limit,
+            @Argument int offset
     ) {
-        return this.userRepository.findUsersByRole(role);
+        return userService.getUsersByRole(role, limit, offset);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
