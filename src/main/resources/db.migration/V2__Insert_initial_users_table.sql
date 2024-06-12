@@ -1,4 +1,3 @@
-
 INSERT INTO USERS (FIRST_NAME, LAST_NAME, EMAIL, PHONE_NUMBER, ADDRESS, CITY, STATE, ZIPCODE, PASSWORD, ROLE) VALUES
 ('Admin', 'Admin', 'admin@example.com', '123-456-7890', '123 Admin St', 'AdminCity', 'AC', '12345', '$2y$05$ceTzfRO2M9m4..NEuRa1HekfGA6885BHELlZ.dfycaQpxaywDqJpy', 'ROLE_ADMIN');
 
